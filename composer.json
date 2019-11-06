@@ -1,0 +1,23 @@
+{
+    "name": "oywenjiao/wxtool",
+    "description": "a simple wx handle",
+    "keywords": ["wx", "tool", "oywenjiao"],
+    "homepage": "https://github.com/oywenjiao/wxtool.git",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "OuYang WenJiao",
+            "email": "wenjiao8605@126.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Wj\\WxTool\\": "src"
+        }
+    }
+}
