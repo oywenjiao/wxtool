@@ -90,7 +90,6 @@ class Order
      * 小程序支付签名计算
      * @param $prepay_id
      * @return array
-     * @author Lejianwen
      */
     public function xcxSign($prepay_id)
     {
@@ -162,7 +161,6 @@ class Order
      * @param bool $need_cert 是否需要证书
      * @return \Psr\Http\Message\StreamInterface
      * @throws \Exception
-     * @author Lejianwen
      */
     protected function postXml($url, $xml, $need_cert = false)
     {
@@ -209,7 +207,6 @@ class Order
      * @param string $refund_fee_type 退款货币种类，默认人名币
      * @return array|bool
      * @throws \Exception
-     * @author Lejianwen
      */
     public function refuseOrder($transaction_id, $out_refund_no, $total_fee, $refund_fee, $refund_desc = '', $refund_fee_type = 'CNY')
     {
