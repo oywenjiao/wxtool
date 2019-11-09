@@ -72,7 +72,7 @@ class WxBase
     {
         $url = "https://api.weixin.qq.com/sns/jscode2session?appid={$this->appid}&secret={$this->secret}&js_code={$code}&grant_type=authorization_code";
         // verify => false 是否验证安全证书
-        $response = $this->client->get($url, ['timeout' => 30,'verify' => false]);
+        $response = $this->client->get($url, ['timeout' => 30, 'verify' => false]);
         $body = $response->getBody();
         $result = json_decode($body, true);
         if (isset($result['errcode'])) {
@@ -85,6 +85,27 @@ class WxBase
         }
         $this->session = $result;
         return $result;
+    }
+
+    /**
+     * 微信授权获取用户信息，网页版通过code换取信息
+     * @param $code
+     * @return bool|mixed|\Psr\Http\Message\ResponseInterface
+     */
+    public function oauthInfo($code)
+    {
+        $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$this->appid}&secret={$this->secret}&code={$code}&grant_type=authorization_code";
+        $response = $this->client->get($url, ['timeout' => 30, 'verify' => false]);
+        $body = $response->getBody();
+        $result = json_decode($body);
+        if (isset($result->errcode)) {
+            $this->error = $result->errmsg;
+            return false;
+        }
+        $user_url = "https://api.weixin.qq.com/sns/userinfo?access_token={$result->access_token}&openid={$result->openid}&lang=zh_CN";
+        $user_info = $this->client->get($user_url, ['timeout' => 30, 'verify' => false]);
+        $user_info = json_decode($user_info, true);
+        return $user_info;
     }
 
     /**

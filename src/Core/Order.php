@@ -61,14 +61,15 @@ class Order
      * @param $price    string 商品价格(分)
      * @param string $notify    string 支付回调地址
      * @param string $body
+     * @param string $trade_type 下单方式，默认 JSAPI支付 其他支付有(NATIVE, APP)
      * @param string $detail
      * @return array|bool
      * @throws \Exception
      */
-    public function unifiedOrder($openid, $order_no, $price, $notify, $body = '', $detail = '')
+    public function unifiedOrder($openid, $order_no, $price, $notify, $body = '', $trade_type = 'JSAPI', $detail = '')
     {
         $url = "https://api.mch.weixin.qq.com/pay/unifiedorder";
-        $xml = $this->makeOrderXml($openid, $order_no, $price, $notify, $body, $detail);
+        $xml = $this->makeOrderXml($openid, $order_no, $price, $notify, $body, $trade_type, $detail);
         if (!$xml) {
             throw new \Exception('下单参数有误');
         }
@@ -130,7 +131,7 @@ class Order
         return false;
     }
 
-    protected function makeOrderXml($openid, $order_no, $price, $notify, $body = '', $detail = '')
+    protected function makeOrderXml($openid, $order_no, $price, $notify, $body = '', $trade_type = '', $detail = '')
     {
         if ($price <= 0) {
             throw new \Exception('价格错误，小于等于0');
@@ -145,7 +146,7 @@ class Order
             'out_trade_no'     => $order_no,
             'total_fee'        => $price,
             'spbill_create_ip' => '127.0.0.1',
-            'trade_type'       => 'JSAPI',
+            'trade_type'       => $trade_type,
             'openid'           => $openid
         ];
         $sign = $this->MakeSign($arr);
