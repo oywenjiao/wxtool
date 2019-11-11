@@ -146,9 +146,11 @@ class Order
             'out_trade_no'     => $order_no,
             'total_fee'        => $price,
             'spbill_create_ip' => '127.0.0.1',
-            'trade_type'       => $trade_type,
-            'openid'           => $openid
+            'trade_type'       => $trade_type
         ];
+        if ($trade_type != 'NATIVE') {
+            $arr['openid'] = $openid;
+        }
         $sign = $this->MakeSign($arr);
         $arr['sign'] = $sign;
         $xml = $this->handler->ToXml($arr);
