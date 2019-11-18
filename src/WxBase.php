@@ -103,8 +103,9 @@ class WxBase
             return false;
         }
         $user_url = "https://api.weixin.qq.com/sns/userinfo?access_token={$result->access_token}&openid={$result->openid}&lang=zh_CN";
-        $user_info = $this->client->get($user_url, ['timeout' => 30, 'verify' => false]);
-        $user_info = json_decode($user_info, true);
+        $userResponse = $this->client->get($user_url, ['timeout' => 30, 'verify' => false]);
+        $userBody = $userResponse->getBody();
+        $user_info = json_decode($userBody, true);
         return $user_info;
     }
 
