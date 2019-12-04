@@ -88,7 +88,7 @@ class Order
     }
 
     /**
-     * 小程序支付签名计算
+     * 小程序及网页端调起 支付签名计算
      * @param $prepay_id
      * @return array
      */
@@ -102,6 +102,25 @@ class Order
             'timeStamp' => time(),
         ];
         $arr['paySign'] = $this->MakeSign($arr);
+        return $arr;
+    }
+
+    /**
+     * app 支付调起签名计算
+     * @param $prepay_id
+     * @return array
+     */
+    public function appSign($prepay_id)
+    {
+        $arr = [
+            'appid'     => $this->base->getAppId(),
+            'partnerid' => $this->mch_id,
+            'prepayid'  => $prepay_id,
+            'package'   => 'Sign=WXPay',
+            'noncestr'  => md5(time()),
+            'timestamp' => time(),
+        ];
+        $arr['sign'] = $this->MakeSign($arr);
         return $arr;
     }
 
@@ -313,8 +332,8 @@ class Order
         // 获取当前时间戳后5位字符
         $time = substr(time(), -5);
         // 获取当前时间戳微秒级，并截取小数点后的前5位字符
-        $microtime = substr(microtime(), 2, 5);
-        $orderSn = $year . $month . $day . $time . $microtime . sprintf('%02d', rand(0, 99));
+        $microTime = substr(microtime(), 2, 5);
+        $orderSn = $year . $month . $day . $time . $microTime . sprintf('%02d', rand(0, 99));
         return $orderSn;
     }
 
