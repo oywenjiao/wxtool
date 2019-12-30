@@ -383,4 +383,51 @@ class Order
         $re_arr = $this->handler->fromXml($response);
         return $re_arr;
     }
+
+    /**
+     * 公众号红包
+     * @param string $openid 用户openid
+     * @param string $trade_no 商户订单号
+     * @param int $amount 红包金额
+     * @param string $send_name 商品名称
+     * @param string $wishing 红包祝福语
+     * @param string $act_name 活动名称
+     * @param string $remark 备注
+     * @param int $total_num 红包总数
+     * @param string $ip
+     * @return array|bool
+     * @throws \Exception
+     */
+    public function sendRedPack(
+        $openid,
+        $trade_no,
+        $amount,
+        $send_name,
+        $wishing,
+        $act_name,
+        $remark,
+        $total_num = 1,
+        $ip = '127.0.0.1'
+    ) {
+        $url = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack';
+        $arr = [
+            'nonce_str'     => md5(time()),
+            'mch_billno'    => $trade_no,
+            'mch_id'        => $this->mch_id,
+            'wxappid'       => $this->base->getAppId(),
+            'send_name'     => $send_name,
+            're_openid'     => $openid,
+            'total_amount'  => $amount,
+            'total_num'     => $total_num,
+            'wishing'       => $wishing,
+            'client_ip'     => $ip,
+            'act_name'      => $act_name,
+            'remark'        => $remark,
+        ];
+        $arr['sign'] = $this->MakeSign($arr);
+        $xml = $this->handler->ToXml($arr);
+        $response = $this->postXml($url, $xml, true);
+        $re_arr = $this->handler->fromXml($response);
+        return $re_arr;
+    }
 }
