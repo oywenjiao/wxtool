@@ -13,7 +13,7 @@ use GuzzleHttp\Client;
 
 class WxBase
 {
-    protected $appid;
+    protected $appId;
     protected $secret;
     protected $client;
     public $session;
@@ -21,9 +21,9 @@ class WxBase
     public $error;
     public $decrypted_data;
 
-    public function __construct($appid, $secret)
+    public function __construct($appId, $secret)
     {
-        $this->appid = $appid;
+        $this->appId = $appId;
         $this->secret = $secret;
         if (!isset($this->client)) {
             $this->client = new Client();
@@ -32,7 +32,7 @@ class WxBase
 
     public function getAppId()
     {
-        return $this->appid;
+        return $this->appId;
     }
 
     public function getSecret()
@@ -46,7 +46,7 @@ class WxBase
      */
     public function access()
     {
-        $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$this->appid}&secret={$this->secret}";
+        $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$this->appId}&secret={$this->secret}";
         $response = $this->client->get($url, ['timeout' => 30, 'verify' => false]);
         $body = $response->getBody();
         $result = json_decode($body, true);
@@ -70,7 +70,7 @@ class WxBase
      */
     public function session($code)
     {
-        $url = "https://api.weixin.qq.com/sns/jscode2session?appid={$this->appid}&secret={$this->secret}&js_code={$code}&grant_type=authorization_code";
+        $url = "https://api.weixin.qq.com/sns/jscode2session?appid={$this->appId}&secret={$this->secret}&js_code={$code}&grant_type=authorization_code";
         // verify => false 是否验证安全证书
         $response = $this->client->get($url, ['timeout' => 30, 'verify' => false]);
         $body = $response->getBody();
@@ -94,7 +94,7 @@ class WxBase
      */
     public function oauthInfo($code)
     {
-        $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$this->appid}&secret={$this->secret}&code={$code}&grant_type=authorization_code";
+        $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$this->appId}&secret={$this->secret}&code={$code}&grant_type=authorization_code";
         $response = $this->client->get($url, ['timeout' => 30, 'verify' => false]);
         $body = $response->getBody();
         $result = json_decode($body);
@@ -151,7 +151,7 @@ class WxBase
             $this->error = 'decode data null!';
             return false;
         }
-        if ($dataObj->watermark->appid != $this->appid) {
+        if ($dataObj->watermark->appid != $this->appId) {
             $this->error = 'appid error!';
             return false;
         }

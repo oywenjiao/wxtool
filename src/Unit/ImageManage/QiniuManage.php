@@ -1,11 +1,11 @@
 <?php
 
-namespace Wj\WxTool\Unit\ImageManager;
+namespace Wj\WxTool\Unit\ImageManage;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
-class QiniuManager
+class QiniuManage
 {
     protected $accessKey;
     protected $secretKey;

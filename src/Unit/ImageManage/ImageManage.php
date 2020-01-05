@@ -6,12 +6,12 @@
  * Time: 13:33
  */
 
-namespace Wj\WxTool\Unit\ImageManager;
+namespace Wj\WxTool\Unit\ImageManage;
 
 
 use GuzzleHttp\Client;
 
-class ImageManager
+class ImageManage
 {
     /**
      * @param $data
